@@ -13,7 +13,6 @@ import (
 )
 
 type AuthService interface {
-	// Updated interface to return raw model and tokens
 	Register(ctx context.Context, req dto.RegisterRequest) (*model.User, string, string, error)
 	Login(ctx context.Context, req dto.LoginRequest) (*model.User, string, string, error)
 }
