@@ -53,8 +53,10 @@ func JWTMiddleware() gin.HandlerFunc {
 		}
 
 		if claims, ok := token.Claims.(jwt.MapClaims); ok {
-			if userID, exists := claims["user_id"]; exists {
-				ctx.Set("userID", userID)
+			if userIDInterface, exists := claims["sub"]; exists {
+				if userIDStr, ok := userIDInterface.(string); ok {
+					ctx.Set("userID", userIDStr)
+				}
 			}
 		}
 

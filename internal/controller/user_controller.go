@@ -14,7 +14,6 @@ type UserController struct {
 	service service.UserService
 }
 
-
 func NewUserController(svc service.UserService) *UserController {
 	return &UserController{
 		service: svc,
@@ -38,7 +37,7 @@ func (ctrl *UserController) GetProfile(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, response.Success("success", profile))
+	c.JSON(http.StatusOK, response.Success("User data successfully retrieved", profile))
 }
 
 func (ctrl *UserController) UpdateProfile(c *gin.Context) {
