@@ -57,12 +57,7 @@ func (s *authService) Register(ctx context.Context, req dto.RegisterRequest) (*m
 		return nil, "", "", err
 	}
 
-	accessToken, refreshToken, err := s.generateTokens(user.ID.String())
-	if err != nil {
-		return nil, "", "", err
-	}
-
-	return user, accessToken, refreshToken, nil
+	return user, "", "", nil
 }
 
 func (s *authService) Login(ctx context.Context, req dto.LoginRequest) (*model.User, string, string, error) {

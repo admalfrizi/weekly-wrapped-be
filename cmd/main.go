@@ -25,11 +25,15 @@ func main() {
 
 	baseRepo := repository.NewBaseRepository(db)
 
-	userRepo := repository.NewAuthRepository(baseRepo)
-	authService := service.NewAuthService(userRepo, jwtSecret)
+	authRepo := repository.NewAuthRepository(baseRepo)
+	authService := service.NewAuthService(authRepo, jwtSecret)
 	authController := controller.NewAuthController(authService)
 
-	r := router.SetupRouter(authController)
+	userRepo := repository.NewUserRepository(baseRepo)
+	userService := service.NewUserService(userRepo)
+	userController := controller.NewUserController(userService)
+
+	r := router.SetupRouter(authController, userController)
 
 	log.Println("Server starting on port 8080");
 	if err := r.Run(":8080"); err != nil {
