@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/admalfrizi/weekly-wrapped-be/internal/controller"
-	"github.com/admalfrizi/weekly-wrapped-be/internal/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -24,12 +23,7 @@ func SetupRouter(
 
 		SetupAuthRoutes(v1, authController)
 
-		userRoutes := v1.Group("/users")
-		userRoutes.Use(middleware.JWTMiddleware())
-		{
-			userRoutes.GET("/me", userController.GetProfile)
-			userRoutes.POST("/me", userController.UpdateProfile)
-		}
+		SetupUserRoutes(v1, userController)
 	}
 
 	return r
