@@ -1,0 +1,66 @@
+# =========================
+# Go Specific
+# =========================
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test output and profiling data
+*.test
+*.out
+*.prof
+*.cgo1.go
+*.cgo2.c
+_cgo_defun.c
+_cgo_gotypes.go
+_cgo_export.*
+
+# Dependency directories (if using vendor, though go.mod is preferred now)
+vendor/
+Godeps/
+
+# =========================
+# Project Specific (Air & Environment)
+# =========================
+# Ignore the environment variables file to prevent leaking secrets
+.env
+.env.*
+!.env.example # Allow an example env file to be committed
+
+# Ignore the build output directory used by Air (Live Reload)
+/tmp/
+
+# Ignore any built binaries in the root or cmd folder
+/main
+/cmd/main
+
+# =========================
+# IDEs and Editors
+# =========================
+# Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# JetBrains / GoLand
+.idea/
+*.iml
+
+# =========================
+# OS Specific
+# =========================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
