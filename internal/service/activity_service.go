@@ -13,17 +13,22 @@ import (
 type ActivityService interface {
 	Create(ctx context.Context, userID string, req dto.CreateActivityRequest) (*model.Activity, error)
 	List(ctx context.Context, userID string, page, limit int) ([]model.Activity, int, error)
+	ListCategory(ctx context.Context) ([]model.Category, error)
 	GetByID(ctx context.Context, userID, activityID string) (*model.Activity, error)
 	Update(ctx context.Context, userID, activityID string, req dto.UpdateActivityRequest) (*model.Activity, error)
 	Delete(ctx context.Context, userID, activityID string) error
 }
 
 type activityService struct {
-	repo repository.ActivityRepository
+	repo         repository.ActivityRepository
+	categoryRepo repository.CategoryRepository
 }
 
-func NewActivityService(repo repository.ActivityRepository) ActivityService {
-	return &activityService{repo: repo}
+func NewActivityService(repo repository.ActivityRepository, category repository.CategoryRepository) ActivityService {
+	return &activityService{
+		repo:         repo,
+		categoryRepo: category,
+	}
 }
 
 func (s *activityService) Create(ctx context.Context, userID string, req dto.CreateActivityRequest) (*model.Activity, error) {
@@ -58,6 +63,14 @@ func (s *activityService) List(ctx context.Context, userID string, page, limit i
 	}
 
 	return activities, totalItems, nil
+}
+
+func (s *activityService) ListCategory(ctx context.Context) ([]model.Category, error) {
+	categories, err := s.categoryRepo.List(ctx)
+	if err != nil {
+		return nil, errors.New("failed to fetch categories")
+	}
+	return categories, nil
 }
 
 func (s *activityService) GetByID(ctx context.Context, userID, activityID string) (*model.Activity, error) {

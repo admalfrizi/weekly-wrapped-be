@@ -14,6 +14,7 @@ func SetupActivityRoutes(
 	activityRoutes.Use(middleware.JWTMiddleware())
 	{
 		activityRoutes.GET("/", activityController.GetActivities)
+		activityRoutes.GET("/categories", activityController.GetCategories)
 		activityRoutes.POST("/", activityController.Create)
 		activityRoutes.GET("/:id", activityController.GetByID)
 	}

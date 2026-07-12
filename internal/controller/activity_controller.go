@@ -87,6 +87,22 @@ func (c *ActivityController) GetActivities(ctx *gin.Context) {
 	)
 }
 
+func (c *ActivityController) GetCategories(ctx *gin.Context) {
+	userID := ctx.GetString("userID")
+	if userID == "" {
+		ctx.JSON(http.StatusUnauthorized, response.Error(http.StatusUnauthorized, "Unauthorized", nil))
+		return
+	}
+
+	categories , err := c.service.ListCategory(ctx.Request.Context())
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, response.Error(http.StatusNotFound, "Error Detected", err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, response.Success("Categories retrieved successfully", categories))
+}
+
 func (c *ActivityController) GetByID(ctx *gin.Context) {
 	userID := ctx.GetString("userID")
 	if userID == "" {
@@ -104,4 +120,30 @@ func (c *ActivityController) GetByID(ctx *gin.Context) {
 
 	safeResponse := response.MapToActivityResponse(*activity)
 	ctx.JSON(http.StatusOK, response.Success("Activity retrieved successfully", safeResponse))
+}
+
+func (c *ActivityController) Update(ctx *gin.Context) {
+	userID := ctx.GetString("userID")
+	if userID == "" {
+		ctx.JSON(http.StatusUnauthorized, response.Error(http.StatusUnauthorized, "Unauthorized", nil))
+		return
+	}
+
+	activityID := ctx.Param("id")
+
+	var req dto.UpdateActivityRequest
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, response.Error(http.StatusBadRequest, "Invalid input data", err.Error()))
+		return
+	}
+
+	activity, err := c.service.Update(ctx.Request.Context(), userID, activityID, req)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, response.Error(http.StatusNotFound, "Error Detected", err.Error()))
+		return
+	}
+
+	// Format response
+	safeResponse := response.MapToActivityResponse(*activity)
+	ctx.JSON(http.StatusOK, response.Success("Activity successfully updated", safeResponse))
 }
