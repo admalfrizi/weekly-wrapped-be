@@ -8,7 +8,7 @@ const (
 	`
 
 	ListActivities = `
-		SELECT a.id, a.user_id, a.category_id, a.value, a.note, a.occurred_at, a.created_at, c.id, c.name, c.icon, c.color_hex
+		SELECT a.id, a.user_id, a.category_id, a.value, a.note, a.occurred_at, a.created_at, c.id, c.name
 		FROM activities a
 		JOIN categories c ON a.category_id = c.id
 		WHERE a.user_id = $1 
@@ -23,7 +23,7 @@ const (
 	GetActivityByID = `
 		SELECT 
 			a.id, a.user_id, a.category_id, a.value, a.note, a.occurred_at, a.created_at,
-			c.id, c.name, c.icon, c.color_hex
+			c.id, c.name
 		FROM activities a
 		JOIN categories c ON a.category_id = c.id
 		WHERE a.id = $1 AND a.user_id = $2;
