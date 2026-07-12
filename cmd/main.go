@@ -34,7 +34,8 @@ func main() {
 	userController := controller.NewUserController(userService)
 
 	activityRepo := repository.NewActivityRepository(baseRepo)
-	activityService := service.NewActivityService(activityRepo)
+	categoryRepo := repository.NewCategoryRepository(baseRepo)
+	activityService := service.NewActivityService(activityRepo, categoryRepo)
 	activityController := controller.NewActivityController(activityService)
 
 	r := router.SetupRouter(authController, userController, activityController)

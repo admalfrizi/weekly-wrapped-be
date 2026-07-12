@@ -10,5 +10,6 @@ func SetupAuthRoutes(rg *gin.RouterGroup, authController *controller.AuthControl
 	{
 		authGroup.POST("/register", authController.Register)
 		authGroup.POST("/login", authController.Login)
+		authGroup.POST("/refresh", authController.Refresh)
 	}
 }

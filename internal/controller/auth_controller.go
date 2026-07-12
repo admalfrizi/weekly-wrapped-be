@@ -29,7 +29,7 @@ func (c *AuthController) Register(ctx *gin.Context) {
 		return
 	}
 
-	user, accessToken, refreshToken, err := c.service.Register(ctx.Request.Context(), req)
+	user, err := c.service.Register(ctx.Request.Context(), req)
 	if err != nil {
 		ctx.JSON(http.StatusConflict, response.Error(
 			http.StatusConflict,
@@ -43,11 +43,7 @@ func (c *AuthController) Register(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusCreated, response.Success(
 		"User successfully registered",
-		gin.H{
-			"access_token":  accessToken,
-			"refresh_token": refreshToken,
-			"user":          safeResponse,
-		},
+		safeResponse,
 	))
 }
 
@@ -63,7 +59,7 @@ func (c *AuthController) Login(ctx *gin.Context) {
 		return
 	}
 
-	user, accessToken, refreshToken, err := c.service.Login(ctx.Request.Context(), req)
+	user, accessToken, refreshToken,accessExp, refreshExp, err := c.service.Login(ctx.Request.Context(), req)
 	if err != nil {
 		ctx.JSON(http.StatusUnauthorized, response.Error(
 			http.StatusUnauthorized,
@@ -80,7 +76,42 @@ func (c *AuthController) Login(ctx *gin.Context) {
 		gin.H{
 			"access_token":  accessToken,
 			"refresh_token": refreshToken,
+			"access_token_expires_at":  accessExp,
+			"refresh_token_expires_at": refreshExp,
 			"user":          safeResponse,
+		},
+	))
+}
+
+func (c *AuthController) Refresh(ctx *gin.Context) {
+	var req dto.RefreshRequest
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, response.Error(
+			http.StatusBadRequest,
+			"Invalid input data",
+			err.Error(),
+		))
+		return
+	}
+
+	accessToken, refreshToken, accessExp, refreshExp, err := c.service.Refresh(ctx.Request.Context(), req)
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, response.Error(
+			http.StatusUnauthorized,
+			"Token refresh failed",
+			err.Error(),
+		))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, response.Success(
+		"Tokens successfully refreshed",
+		gin.H{
+			"access_token":             accessToken,
+			"refresh_token":            refreshToken,
+			"access_token_expires_at":  accessExp,  // The exact timestamp for FE
+			"refresh_token_expires_at": refreshExp, // The exact timestamp for FE
 		},
 	))
 }

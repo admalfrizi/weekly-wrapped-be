@@ -17,5 +17,7 @@ func SetupActivityRoutes(
 		activityRoutes.GET("/categories", activityController.GetCategories)
 		activityRoutes.POST("/", activityController.Create)
 		activityRoutes.GET("/:id", activityController.GetByID)
+		activityRoutes.PUT("/:id", activityController.Update)
+		activityRoutes.DELETE("/:id", activityController.Delete)
 	}
 }

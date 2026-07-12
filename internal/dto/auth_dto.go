@@ -25,3 +25,7 @@ type UserResponse struct {
 	Name          string  `json:"name"`
 	ProfileImgURL *string `json:"profile_img_url,omitempty"` // omitempty hides it if null
 }
+
+type RefreshRequest struct {
+	RefreshToken string `json:"refresh_token" binding:"required"`
+}

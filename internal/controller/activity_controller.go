@@ -147,3 +147,21 @@ func (c *ActivityController) Update(ctx *gin.Context) {
 	safeResponse := response.MapToActivityResponse(*activity)
 	ctx.JSON(http.StatusOK, response.Success("Activity successfully updated", safeResponse))
 }
+
+func (c *ActivityController) Delete(ctx *gin.Context) {
+	userID := ctx.GetString("userID")
+	if userID == "" {
+		ctx.JSON(http.StatusUnauthorized, response.Error(http.StatusUnauthorized, "Unauthorized", nil))
+		return
+	}
+
+	activityID := ctx.Param("id")
+
+	err := c.service.Delete(ctx.Request.Context(), userID, activityID)
+	if err != nil {
+		ctx.JSON(http.StatusNotFound, response.Error(http.StatusNotFound, "Error Detected", err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, response.Success("Activity successfully deleted", nil))
+}
