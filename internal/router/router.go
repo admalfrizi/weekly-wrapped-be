@@ -10,6 +10,7 @@ import (
 func SetupRouter(
 	authController *controller.AuthController, 
 	userController *controller.UserController,
+	activityController *controller.ActivityController,
 ) *gin.Engine {
 	r := gin.Default();
 
@@ -24,6 +25,8 @@ func SetupRouter(
 		SetupAuthRoutes(v1, authController)
 
 		SetupUserRoutes(v1, userController)
+
+		SetupActivityRoutes(v1, activityController)
 	}
 
 	return r

@@ -33,7 +33,11 @@ func main() {
 	userService := service.NewUserService(userRepo)
 	userController := controller.NewUserController(userService)
 
-	r := router.SetupRouter(authController, userController)
+	activityRepo := repository.NewActivityRepository(baseRepo)
+	activityService := service.NewActivityService(activityRepo)
+	activityController := controller.NewActivityController(activityService)
+
+	r := router.SetupRouter(authController, userController, activityController)
 
 	log.Println("Server starting on port 8080");
 	if err := r.Run(":8080"); err != nil {
