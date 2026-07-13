@@ -13,5 +13,4 @@ FROM alpine:latest AS production
 WORKDIR /app
 COPY --from=builder /app/server .
 COPY --from=builder /app/seeder .
-CMD ["./main"]
-ENTRYPOINT ["./server"]
+ENTRYPOINT ["/bin/sh", "-c", "./seeder && ./server"]
