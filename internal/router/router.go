@@ -11,6 +11,7 @@ func SetupRouter(
 	authController *controller.AuthController, 
 	userController *controller.UserController,
 	activityController *controller.ActivityController,
+	dashboardController *controller.DashboardController,
 ) *gin.Engine {
 	r := gin.Default();
 
@@ -27,6 +28,8 @@ func SetupRouter(
 		SetupUserRoutes(v1, userController)
 
 		SetupActivityRoutes(v1, activityController)
+
+		SetupDashboardRoutes(v1, dashboardController)
 	}
 
 	return r
