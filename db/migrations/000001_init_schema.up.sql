@@ -42,3 +42,5 @@ CREATE TABLE weekly_recaps (
 
 CREATE INDEX idx_weekly_recaps_user_id ON weekly_recaps(user_id);
 CREATE INDEX idx_weekly_recaps_slug ON weekly_recaps(slug);
+
+ALTER TABLE weekly_recaps ADD CONSTRAINT unique_user_week UNIQUE (user_id, week_start);

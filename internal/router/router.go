@@ -12,6 +12,7 @@ func SetupRouter(
 	userController *controller.UserController,
 	activityController *controller.ActivityController,
 	dashboardController *controller.DashboardController,
+	recapController *controller.RecapController,
 ) *gin.Engine {
 	r := gin.Default();
 
@@ -30,6 +31,8 @@ func SetupRouter(
 		SetupActivityRoutes(v1, activityController)
 
 		SetupDashboardRoutes(v1, dashboardController)
+
+		SetupRecapRoutes(v1, recapController)
 	}
 
 	return r
